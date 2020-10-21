@@ -12,39 +12,28 @@ namespace Triangle_2
 {
     public partial class Form1 : Form
     {
-        Label txt1, txt2, txt3, txt4;
+        Label txt1, txt2, txt3;
         TextBox txtA, txtB, txtC, txtH, txtP, txtS;
         CheckBox checkA, checkB, checkC, checkH, checkP, checkS, checkFP, checkFS;
         Button btn1, btn2;
-        ListBox lbox;
+        ListView lView;
         PictureBox img;
+        private bool byHeight;
         public Form1()
         {
-            Width = 462;
-            Height = 412;
+            Width = 470;
+            Height = 330;
             txt1 = new Label();
             txt1.Text = "Введите данные";
             txt1.Size = new Size(132, 19);
             txt1.Location = new Point(13, 13);
             Controls.Add(txt1);
 
-            txt2 = new Label();
-            txt2.Text = "Что найти?";
-            txt2.Size = new Size(90, 19);
-            txt2.Location = new Point(13, 246);
-            Controls.Add(txt2);
-
             txt3 = new Label();
             txt3.Text = "Решение";
             txt3.Size = new Size(70, 19);
             txt3.Location = new Point(214, 13);
             Controls.Add(txt3);
-
-            txt4 = new Label();
-            txt4.Text = "Треугольник:";
-            txt4.Size = new Size(170, 19);
-            txt4.Location = new Point(140, 350);
-            Controls.Add(txt4);
 
             txtA = new TextBox();
             txtA.Location = new Point(88, 39);
@@ -118,39 +107,24 @@ namespace Triangle_2
             checkP.Location = new Point(13, 172);
             Controls.Add(checkP);
 
-            checkFS = new CheckBox();
-            checkFS.Text = "Площадь";
-            checkFS.Size = new Size(73, 17);
-            checkFS.Location = new Point(13, 271);
-            Controls.Add(checkFS);
-
-            checkFP = new CheckBox();
-            checkFP.Text = "Периметр";
-            checkFP.Size = new Size(77, 17);
-            checkFP.Location = new Point(13, 294);
-            Controls.Add(checkFP);
-
             btn1 = new Button();
             btn1.Text = "Создать";
             btn1.Size = new Size(90, 45);
-            btn1.Location = new Point(13, 195);
+            btn1.Location = new Point(13, 230);
             Controls.Add(btn1);
             btn1.Click += Btn1_Click;
 
-            btn2 = new Button();
-            btn2.Text = "Найти";
-            btn2.Size = new Size(90, 45);
-            btn2.Location = new Point(13, 317);
-            Controls.Add(btn2);
-
-            lbox = new ListBox();
-            lbox.Size = new Size(217, 238);
-            lbox.Location = new Point(214 ,38);
-            Controls.Add(lbox);
+            lView = new ListView();
+            lView.Size = new Size(217, 238);
+            lView.Location = new Point(214 ,38);
+            lView.View = View.Details;
+            lView.Columns.Add("Параметр", 107, HorizontalAlignment.Left);
+            lView.Columns.Add("Значение", 106, HorizontalAlignment.Right);
+            Controls.Add(lView);
 
             img = new PictureBox();
-            img.Size = new Size(91, 68);
-            img.Location = new Point(340, 294);
+            img.Size = new Size(80, 80);
+            img.Location = new Point(120, 200);
             Controls.Add(img);
         }
 
@@ -195,12 +169,10 @@ namespace Triangle_2
             if (txtP.TextLength > 0)
             {
                 checkP.Enabled = false;
-                checkFP.Enabled = false;
             }
             else
             {
                 checkP.Enabled = true;
-                checkFP.Enabled = true;
             }
         }
 
@@ -209,12 +181,10 @@ namespace Triangle_2
             if(txtS.TextLength > 0)
             {
                 checkS.Enabled = false;
-                checkFS.Enabled = false;
             }
             else
             {
                 checkS.Enabled = true;
-                checkFS.Enabled = true;
             }
         }
 
@@ -232,7 +202,97 @@ namespace Triangle_2
 
         private void Btn1_Click(object sender, EventArgs e)
         {
-            
+            if (lView.Items.Count > 0)
+            {
+                lView.Items.Clear();
+            }
+            if (txtA.Text.Length > 0 && txtB.Text.Length > 0 && txtC.Text.Length > 0)
+            {
+                double a, b, c;
+                a = Convert.ToDouble(txtA.Text); // считываем значение стороны а
+                b = Convert.ToDouble(txtB.Text); // считываем значение стороны b
+                c = Convert.ToDouble(txtC.Text); // считываем значение стороны c
+                Triangle triangle = new Triangle(a, b, c); // создаем объект класса Triangle с именем triangle
+                lView.Items.Add("Сторона A"); // добавляем соответсвующие ячейки в коллекцию items объекта listview1
+                lView.Items.Add("Сторона B"); // (при клике на кнопку Запуск первый столбец заполнится этими нашими именами)
+                lView.Items.Add("Сторона C"); //
+                lView.Items.Add("Периметр"); //
+                lView.Items.Add("Полупериметр"); //
+                lView.Items.Add("Площадь"); //
+                lView.Items.Add("Существует?"); //
+                lView.Items.Add("Спецификатор"); //
+                lView.Items[0].SubItems.Add(triangle.OutputA()); // методы по выводу сторон a, b ,c
+                lView.Items[1].SubItems.Add(triangle.OutputB()); // (Item'у с индексом [i] присваиваем значение сабайтема, содержащегося во втором столбце
+                lView.Items[2].SubItems.Add(triangle.OutputC()); //
+                lView.Items[3].SubItems.Add(Convert.ToString(triangle.Perimeter())); //выводим периметр
+                lView.Items[4].SubItems.Add(Convert.ToString(triangle.HalfPerimeter())); //выводим полупериметр
+                lView.Items[5].SubItems.Add(Convert.ToString(triangle.Surface())); // выводим значение площади
+                if (triangle.ExistTriangle) { lView.Items[6].SubItems.Add("Существует"); } // свойство Triangle.exist
+                else lView.Items[6].SubItems.Add("Не существует");
+                lView.Items[7].SubItems.Add(triangle.TriangleType); // выводим вид треугольника
+                if(triangle.TriangleType == "Равносторонний")
+                {
+                    img.Image = new Bitmap("triangle1.png");
+                    img.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                else if(triangle.TriangleType == "Равнобедренный")
+                {
+                    img.Image = new Bitmap("triangle2.png");
+                    img.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                else if(triangle.TriangleType == "Разносторонний" && triangle.ExistTriangle == true)
+                {
+                    img.Image = new Bitmap("triangle3.png");
+                    img.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                else
+                {
+                    img.Image = new Bitmap("none.png");
+                }
+            }
+            else if (txtA.Text.Length > 0 && txtH.Text.Length > 0)
+            {
+                double a, h;
+                a = Convert.ToDouble(txtA.Text); // считываем значение стороны а
+                h = Convert.ToDouble(txtH.Text);
+                Triangle triangle = new Triangle(byHeight, a, h); // создаем объект класса Triangle с именем triangle
+                lView.Items.Add("Сторона а"); // добавляем соответсвующие ячейки в коллекцию items объекта listview1
+                lView.Items.Add("Сторона b"); // (при клике на кнопку Запуск первый столбец заполнится этими нашими именами)
+                lView.Items.Add("Сторона c"); //
+                lView.Items.Add("Высота"); //
+                lView.Items.Add("Периметр"); //
+                lView.Items.Add("Площадь"); //
+                lView.Items.Add("Существует?"); //
+                lView.Items.Add("Спецификатор"); //
+                lView.Items[0].SubItems.Add(triangle.OutputA()); // методы по выводу сторон a, b ,c
+                lView.Items[1].SubItems.Add(triangle.OutputB()); // (Item'у с индексом [i] присваиваем значение сабайтема, содержащегося во втором столбце
+                lView.Items[2].SubItems.Add(triangle.OutputC()); //
+                lView.Items[3].SubItems.Add(triangle.OutputH()); //
+                lView.Items[4].SubItems.Add(Convert.ToString(triangle.Perimeter())); //выводим периметр
+                lView.Items[5].SubItems.Add(Convert.ToString(triangle.Surface())); // выводим значение площади
+                if (triangle.ExistTriangle) { lView.Items[6].SubItems.Add("Существует"); } // свойство Triangle.exist
+                else lView.Items[6].SubItems.Add("Не существует");
+                lView.Items[7].SubItems.Add(triangle.TriangleType); // выводим вид треугольника
+                if (triangle.TriangleType == "Равносторонний")
+                {
+                    img.Image = new Bitmap("triangle1.png");
+                    img.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                else if (triangle.TriangleType == "Равнобедренный")
+                {
+                    img.Image = new Bitmap("triangle2.png");
+                    img.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                else if (triangle.TriangleType == "Разносторонний" && triangle.ExistTriangle == true)
+                {
+                    img.Image = new Bitmap("triangle3.png");
+                    img.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                else
+                {
+                    img.Image = new Bitmap("none.png");
+                }
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

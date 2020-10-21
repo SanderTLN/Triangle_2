@@ -111,6 +111,11 @@ namespace Triangle_2
             return Convert.ToString(c);
         }
 
+        public string OutputH()
+        {
+            return Convert.ToString(h);
+        }
+
         public double Perimeter()
         {
             double p = a + b + c;
