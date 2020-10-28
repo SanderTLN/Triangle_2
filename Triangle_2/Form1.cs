@@ -13,8 +13,8 @@ namespace Triangle_2
     public partial class Form1 : Form
     {
         Label txt1, txt2;
-        TextBox txtA, txtB, txtC, txtH, txtP, txtS;
-        CheckBox checkA, checkB, checkC, checkH, checkP, checkS;
+        TextBox txtA, txtB, txtC, txtH;
+        CheckBox checkA, checkB, checkC, checkH;
         Button btn1, btn2;
         ListView lView;
         PictureBox img;
@@ -24,8 +24,8 @@ namespace Triangle_2
         private bool byHeight;
         public Form1()
         {
-            Width = 470;
-            Height = 400;
+            Width = 460;
+            Height = 330;
             txt1 = new Label();
             txt1.Text = "Введите данные";
             txt1.Size = new Size(132, 19);
@@ -62,18 +62,6 @@ namespace Triangle_2
             Controls.Add(txtH);
             txtH.TextChanged += TxtH_TextChanged;
 
-            txtS = new TextBox();
-            txtS.Location = new Point(88, 143);
-            txtS.Size = new Size(100, 20);
-            Controls.Add(txtS);
-            txtS.TextChanged += TxtS_TextChanged;
-
-            txtP = new TextBox();
-            txtP.Location = new Point(88, 169);
-            txtP.Size = new Size(100, 20);
-            Controls.Add(txtP);
-            txtP.TextChanged += TxtP_TextChanged;
-
             checkA = new CheckBox();
             checkA.Text = "Сторона A";
             checkA.Size = new Size(78, 17);
@@ -98,29 +86,17 @@ namespace Triangle_2
             checkH.Location = new Point(13, 120);
             Controls.Add(checkH);
 
-            checkS = new CheckBox();
-            checkS.Text = "Площадь";
-            checkS.Size = new Size(78, 17);
-            checkS.Location = new Point(13, 146);
-            Controls.Add(checkS);
-
-            checkP = new CheckBox();
-            checkP.Text = "Периметр";
-            checkP.Size = new Size(78, 17);
-            checkP.Location = new Point(13, 172);
-            Controls.Add(checkP);
-
             btn1 = new Button();
             btn1.Text = "Создать";
             btn1.Size = new Size(90, 45);
-            btn1.Location = new Point(13, 200);
+            btn1.Location = new Point(13, 150);
             Controls.Add(btn1);
             btn1.Click += Btn1_Click;
 
             btn2 = new Button();
             btn2.Text = "Нарисовать";
             btn2.Size = new Size(90, 45);
-            btn2.Location = new Point(13, 250);
+            btn2.Location = new Point(113, 150);
             Controls.Add(btn2);
             btn2.Click += Btn2_Click;
 
@@ -134,12 +110,12 @@ namespace Triangle_2
 
             img = new PictureBox();
             img.Size = new Size(80, 80);
-            img.Location = new Point(120, 200);
+            img.Location = new Point(20, 200);
             Controls.Add(img);
 
             panel = new Panel();
             panel.Size = new Size(80, 80);
-            panel.Location = new Point(120, 280);
+            panel.Location = new Point(120, 200);
             Controls.Add(panel);
             gp = panel.CreateGraphics();
         }
@@ -307,30 +283,6 @@ namespace Triangle_2
             else
             {
                 checkB.Enabled = true;
-            }
-        }
-
-        private void TxtP_TextChanged(object sender, EventArgs e)
-        {
-            if (txtP.TextLength > 0)
-            {
-                checkP.Enabled = false;
-            }
-            else
-            {
-                checkP.Enabled = true;
-            }
-        }
-
-        private void TxtS_TextChanged(object sender, EventArgs e)
-        {
-            if(txtS.TextLength > 0)
-            {
-                checkS.Enabled = false;
-            }
-            else
-            {
-                checkS.Enabled = true;
             }
         }
 
