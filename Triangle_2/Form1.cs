@@ -330,22 +330,22 @@ namespace Triangle_2
                 lView.Items[7].SubItems.Add(triangle.TriangleType); // выводим вид треугольника
                 if(triangle.TriangleType == "Равносторонний" && triangle.ExistTriangle == true)
                 {
-                    img.Image = new Bitmap("triangle1.png");
+                    img.Image = new Bitmap(@"..\..\Properties\triangle1.png");
                     img.SizeMode = PictureBoxSizeMode.Zoom;
                 }
                 else if(triangle.TriangleType == "Равнобедренный" && triangle.ExistTriangle == true)
                 {
-                    img.Image = new Bitmap("triangle2.png");
+                    img.Image = new Bitmap(@"..\..\Properties\triangle2.png");
                     img.SizeMode = PictureBoxSizeMode.Zoom;
                 }
                 else if(triangle.TriangleType == "Разносторонний" && triangle.ExistTriangle == true)
                 {
-                    img.Image = new Bitmap("triangle3.png");
+                    img.Image = new Bitmap(@"..\..\Properties\triangle3.png");
                     img.SizeMode = PictureBoxSizeMode.Zoom;
                 }
                 else
                 {
-                    img.Image = new Bitmap("none.png");
+                    img.Image = new Bitmap(@"..\..\Properties\none.png");
                 }
             }
             else if (txtA.Text.Length > 0 && txtH.Text.Length > 0)
